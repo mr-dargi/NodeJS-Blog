@@ -12,12 +12,20 @@ const server = http.createServer((req, res) => {
     switch(req.url) {
         case "/":
             path+= "main.html";
+            res.statusCode = 200;
             break;
         case "/about":
-            path+= "about.html"
+            path+= "about.html";
+            res.statusCode = 200;
+            break;
+        case "/about-me":    // redirect to new url
+            res.statusCode = 301;
+            res.setHeader("Location", "/about");
+            res.end();
             break;
         default:
-            path+= "404.html"        
+            path+= "404.html";
+            res.statusCode = 404;        
     }
 
     fs.readFile(path, (err, data) => {
