@@ -27,48 +27,11 @@ app.set("view engine", "ejs");
 
 // middleware and & static files
 app.use(express.static("public"));
+app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
 
-// mongoose and mongo sendbox routes
-// app.get('/add-blog', (req, res) => {
-// const blog = new Blog({
-//         title: 'new blog',
-//         snippet: 'about my new blog',
-//         body: 'more about my new blog'
-//     })
-
-//     blog.save()
-//         .then(result => {
-//         res.send(result);
-//         })
-//         .catch(err => {
-//         console.log(err);
-//         });
-// });
-
-
-// app.get("/all-blogs", (req, res) => {
-//     Blog.find()
-//         .then((result) => res.send(result))
-//         .catch((err) => console.log(err));
-// })
-
-
-// app.get("/single-blog", (req, res) => {
-//     Blog.findById()
-//         .then((result) => res.send(result))
-//         .catch((err) => console.log(err));
-// })
-
-
 app.get("/", (req, res) => {
-//     const blogs = [
-//         {title: "Some time see you past out side my door", snippet: "Lorem ipsum dolor, sit amet consectetur adipisicing elit."},
-//         {title: "Mohammad reza Dargi", snippet: "Lorem ipsum dolor, sit amet consectetur adipisicing elit."},
-//         {title: "How to defeat browser", snippet: "Lorem ipsum dolor, sit amet consectetur adipisicing elit."}
-//     ]
-//    res.render("main", { title: "HOME", blogs });
     res.redirect("./blogs");
 });
 
@@ -85,6 +48,14 @@ app.get("/blogs", (req, res) => {
             res.render("main", { title: "All blogs", blogs: result })
         })
         .catch((err) => console.log(err));    
+})
+
+app.post("/blogs", (req, res) => {
+    const blog = new Blog(req.body);
+
+    blog.save()
+        .then((result) => res.redirect("/blogs"))
+        .catch((err) => console.log(err));
 })
 
 
