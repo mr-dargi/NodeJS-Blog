@@ -59,6 +59,12 @@ app.post("/blogs", (req, res) => {
 })
 
 
+app.get("/blogs/create", (req, res) => {
+    res.render("create", { title: "CREATE NEW BLOG" });
+});
+
+
+
 app.get("/blogs/:id", (req, res) => {
     const id = req.params.id; // The name of id is same just like /:id
     Blog.findById(id)
@@ -67,9 +73,14 @@ app.get("/blogs/:id", (req, res) => {
 })
 
 
-app.get("/blogs/create", (req, res) => {
-    res.render("create", { title: "CREATE NEW BLOG" });
-});
+app.delete("/blogs/:id", (req, res) => {
+    const id= req.params.id;
+
+    Blog.findByIdAndDelete(id)
+        .then(result => res.json({ redirect: "/blogs" }))
+        .catch(err => console.log(err));
+})
+
 
 // 404 page
 app.use((req, res) => {
